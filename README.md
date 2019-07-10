@@ -1,8 +1,8 @@
-##### FoxLife
+# FoxLife
 
-### A hackathon project for Meteohacks
+## A hackathon project for Meteohacks
 
-## Description:
+#### Description:
 
 Foxlife is a mobile game designed to teach children about weather. 
 
