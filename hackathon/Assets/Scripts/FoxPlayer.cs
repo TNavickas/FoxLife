@@ -12,15 +12,22 @@ public class FoxPlayer : MonoBehaviour
     [SerializeField]
     private int _thirst;
 
+    public GameObject weather;
+    private WeatherData weatherData;
+    private string weatherCond;
+    private float weatherTemp;
+    private string _item;
+
     // Start is called before the first frame update
     void Start()
     {
-        PlayerPrefs.SetString("exittime", "07/09/2019 12:12:00");
-        InitPlayer();
+        updatePlayer();
+        progressGame();
     }
 
-    private void InitPlayer()
+    private void updatePlayer()
     {
+        
         if (!PlayerPrefs.HasKey("_hearts"))
         {
             _hearts = 10;
@@ -28,7 +35,7 @@ public class FoxPlayer : MonoBehaviour
         }
         else
         {
-            _hearts = PlayerPrefs.GetInt("_health");
+            _hearts = PlayerPrefs.GetInt("_hearts");
         }
 
         if (!PlayerPrefs.HasKey("_hunger"))
@@ -51,30 +58,99 @@ public class FoxPlayer : MonoBehaviour
             _thirst = PlayerPrefs.GetInt("_thirst");
         }
 
-        if (!PlayerPrefs.HasKey("exittime"))
+        if (!PlayerPrefs.HasKey("_exittime"))
         {
-            PlayerPrefs.SetString("exittime", currentTime());
+            PlayerPrefs.SetString("_exittime", currentTime());
         }
 
-        TimeSpan timeElapsed = getTimeDifference();
-        Debug.Log(timeElapsed.TotalHours);
-        _hearts -= (int) (timeElapsed.TotalHours);
-        _hunger -= (int) (timeElapsed.TotalHours);
-        _thirst -= (int) (timeElapsed.TotalHours);
-        if (_hearts < 0) {
-            _hearts = 0;
-        }
-        if (_hunger < 0)
-        {
-            _hunger = 0;
-        }
-        if (_thirst < 0)
-        {
-            _thirst = 0;
-        }
-
+        InvokeRepeating("updateWeather", 0f, Constants.HOUR);
         InvokeRepeating("setExitTime", 0f, 30f);
+        
+    }
 
+    public void checkConditions()
+    {
+        CancelInvoke("decrementHearts");
+        CancelInvoke("decrementHunger");
+        CancelInvoke("decrementThirst");
+        
+        Debug.Log("Mainly Sunny".Contains("Sunny"));
+        Debug.Log(item);
+        // Sunny and high temperatures
+        if (weatherCond.Contains("Sunny") && weatherTemp >= 25.0)
+        {
+            Debug.Log("Burning Up");
+            InvokeRepeating("decrementThirst", 5f, 5f);
+            InvokeRepeating("decrementHunger", 10f, 10f);
+            InvokeRepeating("decrementHearts", 10f, 10f);
+        }
+
+        else if (weatherCond.Contains("Rain") && item != "Umbrella") {
+            Debug.Log("Rain Poisoning");
+            InvokeRepeating("decrementHearts", 3f, 3f);
+            InvokeRepeating("decrementHunger", 10f, 10f);
+            InvokeRepeating("decrementThirst", 10f, 10f);
+        }
+
+        else
+        {
+            Debug.Log("no");
+            InvokeRepeating("decrementHearts", 10f, 10f);
+            InvokeRepeating("decrementThirst", 10f, 10f);
+            InvokeRepeating("decrementHunger", 10f, 10f);
+        }
+        
+    }
+
+    public void change()
+    {
+        weatherCond = "Light Rain Showersand Flurries";
+        weatherTemp = 25.0f;
+        checkConditions();
+    }
+
+    public void citem()
+    {
+        item = "Umbrella";
+        checkConditions();
+    }
+
+    private void decrementHearts()
+    {
+        _hearts -= 1;
+        if (_hearts < 0) { _hearts = 0; }
+    }
+
+    private void decrementHunger()
+    {
+        _hunger -= 1;
+        if (_hunger < 0) { _hunger = 0; }
+    }
+
+    private void decrementThirst()
+    {
+        _thirst -= 1;
+        if (_thirst < 0) { _thirst = 0; }
+    }
+
+    private void updateWeather()
+    {
+        weatherData = weather.GetComponent<WeatherDataController>().GetWeatherData(PlayerPrefs.GetString("_city"));
+        weatherCond = weatherData.Condition;
+        weatherTemp = float.Parse(weatherData.Temperature);
+        Debug.Log(weatherData.Condition);
+        checkConditions();
+    }
+
+    private void progressGame()
+    {
+        TimeSpan timeElapsed = getTimeDifference();
+        _hearts -= (int)(timeElapsed.TotalHours);
+        _hunger -= (int)(timeElapsed.TotalHours);
+        _thirst -= (int)(timeElapsed.TotalHours);
+        if (_hearts < 0){_hearts = 0;}
+        if (_hunger < 0){_hunger = 0;}
+        if (_thirst < 0){_thirst = 0;}
     }
 
     public int hearts
@@ -96,6 +172,12 @@ public class FoxPlayer : MonoBehaviour
         set { _thirst = value; }
     }
 
+    public string item
+    {
+        get { return _item; }
+        set { _item = value; }
+    }
+
     public string currentTime()
     {
         DateTime current = DateTime.Now;
@@ -104,13 +186,21 @@ public class FoxPlayer : MonoBehaviour
 
     void setExitTime()
     {
-        PlayerPrefs.SetString("exittime", currentTime());
+        PlayerPrefs.SetString("_exittime", currentTime());
     }
 
     public TimeSpan getTimeDifference()
     {
-        Debug.Log("exit:" + Convert.ToDateTime(PlayerPrefs.GetString("exittime")));
-        return DateTime.Now - Convert.ToDateTime(PlayerPrefs.GetString("exittime"));
+        return DateTime.Now - Convert.ToDateTime(PlayerPrefs.GetString("_exittime"));
+    }
+
+    public string exitTime()
+    {
+        return PlayerPrefs.GetString("_exittime");
+    }
+    public string city()
+    {
+        return weatherCond + weatherTemp;
     }
 
 }

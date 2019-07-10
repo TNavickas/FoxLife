@@ -9,6 +9,6 @@ public class StartScreen : MonoBehaviour
     // Update is called once per frame
     public void ChangeScene()
     {
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene("WeatherSelection");
     }
 }
