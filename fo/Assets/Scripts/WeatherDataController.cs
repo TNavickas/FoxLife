@@ -18,40 +18,7 @@ public class WeatherDataController : MonoBehaviour
     public Text HumidexText;
     public Text WindSpeedText;
 
-    public void OnTorontoSelected() {
-        WeatherData weatherData = GetWeatherData("Toronto");
-        SetText(weatherData);
-        PlayerPrefs.SetString("_city", "Toronto");
-        SceneManager.LoadScene("GameScene");
-    }
-
-    public void OnOttawaSelected() {
-        WeatherData weatherData = GetWeatherData("Ottawa");
-        SetText(weatherData);
-        PlayerPrefs.SetString("_city", "Ottawa");
-        SceneManager.LoadScene("GameScene");
-    }
-
-    public void OnMontrealSelected() {
-        WeatherData weatherData = GetWeatherData("Montreal");
-        SetText(weatherData);
-        PlayerPrefs.SetString("_city", "Montreal");
-        SceneManager.LoadScene("GameScene");
-    }
-
-    private void SetText(WeatherData weatherData) {
-        StationText.text = weatherData.Station;
-        TimeText.text = weatherData.Time;
-        ConditionText.text = weatherData.Condition;
-        TemperatureText.text = weatherData.Temperature.ToString();
-        HumidexText.text = weatherData.Humidex.ToString();
-        WindSpeedText.text = weatherData.WindSpeed.ToString();
-    }
-
-    public WeatherData GetWeatherData(string cityName) {
-
-        int idx = CityNames.IndexOf(cityName);
-        string cityCode = CityCodes[idx];
+    public WeatherData GetWeatherData(string cityCode) {
 
         string URLString = URLStringPrefix + cityCode;
         XmlDocument doc = new XmlDocument();

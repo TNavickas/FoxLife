@@ -62,6 +62,7 @@ public class itemDragHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHan
 
                 // Spawn draggable version
                 draggedItem = new GameObject();
+                draggedItem.name = gameObject.name;
                 Image itemImage = draggedItem.AddComponent<Image>();
                 itemImage.preserveAspect = true;
                 itemImage.raycastTarget = false;

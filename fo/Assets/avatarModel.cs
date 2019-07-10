@@ -20,6 +20,7 @@ public class avatarModel : MonoBehaviour
     private WeatherData weatherData;
     private string weatherCond;
     private float weatherTemp;
+    private float weatherWind;
     private string _item;
 
     // Start is called before the first frame update
@@ -27,7 +28,7 @@ public class avatarModel : MonoBehaviour
     {
         updatePlayer();
         progressGame();
-        heartIconController.updateHearts(8, 6, 1);
+        //heartIconController.updateHearts(8, 6, 1);
         weatherIconController.displayIcons("Rain");
     }
 
@@ -42,6 +43,10 @@ public class avatarModel : MonoBehaviour
         Debug.Log(item);
         Debug.Log(itemName);
         _item = itemName;
+        if (_item == "water")
+        {
+            incrementThrist();
+        }
         //checkConditions();
     }
 
@@ -50,7 +55,7 @@ public class avatarModel : MonoBehaviour
 
         if (!PlayerPrefs.HasKey("_hearts"))
         {
-            _hearts = 10;
+            _hearts = Constants.MAXHEARTS;
             PlayerPrefs.SetInt("_hearts", _hearts);
         }
         else
@@ -60,7 +65,7 @@ public class avatarModel : MonoBehaviour
 
         if (!PlayerPrefs.HasKey("_hunger"))
         {
-            _hunger = 10;
+            _hunger = Constants.MAXHUNGER;
             PlayerPrefs.SetInt("_hunger", _hunger);
         }
         else
@@ -70,7 +75,7 @@ public class avatarModel : MonoBehaviour
 
         if (!PlayerPrefs.HasKey("_thirst"))
         {
-            _thirst = 10;
+            _thirst = Constants.MAXTHIRST;
             PlayerPrefs.SetInt("_thirst", _thirst);
         }
         else
@@ -84,47 +89,73 @@ public class avatarModel : MonoBehaviour
         }
 
         InvokeRepeating("updateWeather", 0f, Constants.HOUR);
-        InvokeRepeating("setExitTime", 0f, 30f);
+        InvokeRepeating("setExitTime", 0f, Constants.THIRTYSEC);
 
     }
 
     public void checkConditions()
     {
+        var REGINTERVAL = 1f;  //Constants.TENMIN;
+        var FASTINTERVAL = 0.5f; //Constants.THREEMIN;
         CancelInvoke("decrementHearts");
         CancelInvoke("decrementHunger");
         CancelInvoke("decrementThirst");
 
-        Debug.Log("Mainly Sunny".Contains("Sunny"));
-        Debug.Log(item);
+        Debug.Log(weatherCond);
         // Sunny and high temperatures
-        if (weatherCond.Contains("Sunny") && weatherTemp >= 25.0)
+        if (weatherCond.Contains("Sunny") && weatherTemp >= 22.0)
         {
-            curWeatherState = "Hot";
             Debug.Log("Burning Up");
-            InvokeRepeating("decrementThirst", 5f, 5f);
-            InvokeRepeating("decrementHunger", 10f, 10f);
-            InvokeRepeating("decrementHearts", 10f, 10f);
+            InvokeRepeating("decrementThirst", FASTINTERVAL, FASTINTERVAL);
+            InvokeRepeating("decrementHunger", REGINTERVAL, REGINTERVAL);
+            InvokeRepeating("decrementHearts", REGINTERVAL, REGINTERVAL);
         }
-
+        // Raining
         else if (weatherCond.Contains("Rain") && item != "Umbrella")
         {
-            curWeatherState = "Rain";
             Debug.Log("Rain Poisoning");
-            InvokeRepeating("decrementHearts", 3f, 3f);
-            InvokeRepeating("decrementHunger", 10f, 10f);
-            InvokeRepeating("decrementThirst", 10f, 10f);
+            InvokeRepeating("decrementHearts", FASTINTERVAL, FASTINTERVAL);
+            InvokeRepeating("decrementHunger", REGINTERVAL, REGINTERVAL);
+            InvokeRepeating("decrementThirst", REGINTERVAL, REGINTERVAL);
+        }
+        // Windy & Cold
+        else if (weatherWind >= 25.0 && weatherTemp <= 10)
+        {
+            Debug.Log("cw");
+            if (item != "CoatEar")
+            {
+                Debug.Log("dying");
+                InvokeRepeating("decrementHearts", FASTINTERVAL, FASTINTERVAL);
+                InvokeRepeating("decrementHunger", FASTINTERVAL, FASTINTERVAL);
+                InvokeRepeating("decrementThirst", REGINTERVAL, REGINTERVAL);
+            }
+            else
+            {
+                InvokeRepeating("decrementHearts", REGINTERVAL, REGINTERVAL);
+                InvokeRepeating("decrementHunger", FASTINTERVAL, FASTINTERVAL);
+                InvokeRepeating("decrementThirst", REGINTERVAL, REGINTERVAL);
+            }
+        }
+
+        // Snow
+
+        else if (weatherCond.Contains("Snow") && item != "Hat")
+        {
+            Debug.Log("Hypothermia");
+            InvokeRepeating("decrementHearts", FASTINTERVAL, FASTINTERVAL);
+            InvokeRepeating("decrementHunger", REGINTERVAL, REGINTERVAL);
+            InvokeRepeating("decrementThirst", REGINTERVAL, REGINTERVAL);
         }
 
         else
         {
-            curWeatherState = "";
             Debug.Log("no");
-            InvokeRepeating("decrementHearts", 10f, 10f);
-            InvokeRepeating("decrementThirst", 10f, 10f);
-            InvokeRepeating("decrementHunger", 10f, 10f);
+            InvokeRepeating("incrementHearts", REGINTERVAL, REGINTERVAL);
+            InvokeRepeating("decrementThirst", REGINTERVAL, REGINTERVAL);
+            InvokeRepeating("decrementHunger", REGINTERVAL, REGINTERVAL);
         }
-
-        weatherIconController.displayIcons(curWeatherState);
+        
+    weatherIconController.displayIcons(curWeatherState);
 
     }
 
@@ -149,9 +180,27 @@ public class avatarModel : MonoBehaviour
         heartIconController.updateHearts(_hearts, _hunger, _thirst);
     }
 
+    public void incrementHearts()
+    {
+        if (hearts < Constants.MAXHEARTS) { hearts += 1; }
+        heartIconController.updateHearts(_hearts, _hunger, _thirst);
+    }
+
+    public void incrementHunger()
+    {
+        if (hunger < Constants.MAXHUNGER) { hunger += 1; }
+        heartIconController.updateHearts(_hearts, _hunger, _thirst);
+    }
+
+    public void incrementThrist()
+    {
+        if (thirst < Constants.MAXTHIRST) { thirst += 1; }
+        heartIconController.updateHearts(_hearts, _hunger, _thirst);
+    }
+
     private void updateWeather()
     {
-        weatherData = weather.GetComponent<WeatherDataController>().GetWeatherData(PlayerPrefs.GetString("_city"));
+        weatherData = weather.GetComponent<WeatherDataController>().GetWeatherData(SelectedCityInfo.CityCode);
         weatherCond = weatherData.Condition;
         weatherTemp = float.Parse(weatherData.Temperature);
         Debug.Log(weatherData.Condition);
