@@ -1,6 +1,4 @@
-﻿// From https://www.youtube.com/watch?v=Pc8K_DVPgVM
-
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -49,7 +47,6 @@ public class itemDragHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHan
     {
         if (draggedItem != null)
         {
-            Debug.Log("Held");
             draggedItemPos = eventData.position;
             //newRot = eventData.delta.x * 5 / scaleFactor;
             newRot = Mathf.Clamp(Mathf.LerpAngle(newRot, eventData.delta.x * 5 / scaleFactor, 0.5f), -50f, 50f);
@@ -66,10 +63,12 @@ public class itemDragHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHan
                 // Spawn draggable version
                 draggedItem = new GameObject();
                 Image itemImage = draggedItem.AddComponent<Image>();
+                itemImage.preserveAspect = true;
                 itemImage.raycastTarget = false;
                 itemImage.sprite = gameObject.GetComponent<Image>().sprite;
                 draggedItem.GetComponent<RectTransform>().SetParent(test);
                 draggedItemPos = eventData.position;
+                draggedItem.GetComponent<RectTransform>().localScale *= scaleFactor;
                 draggedItem.GetComponent<RectTransform>().position = eventData.position;
                 draggedItem.SetActive(true);
 
@@ -79,7 +78,6 @@ public class itemDragHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHan
             }
             else
             {
-                Debug.Log("Not Held");
                 ignore = true;
                 test2.GetComponent<ScrollRect>().OnDrag(eventData);
             }
@@ -100,9 +98,9 @@ public class itemDragHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHan
             //  Note: Would typically want to use IDropHandler for this type of problem
             Debug.Log(eventData.pointerCurrentRaycast.gameObject);
             GameObject dragEndGameObj = eventData.pointerCurrentRaycast.gameObject;
-            if (dragEndGameObj.name == "avatar")
+            if (dragEndGameObj != null && dragEndGameObj.name == "avatar")
             {
-                dragEndGameObj.GetComponent<avatarModel>().useItem(draggedItem, "test");
+                dragEndGameObj.GetComponent<avatarModel>().useItem(draggedItem, draggedItem.name);
             }
 
             Destroy(draggedItem);
