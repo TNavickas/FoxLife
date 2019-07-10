@@ -22,7 +22,6 @@ public class heartToIcons : MonoBehaviour
 
     public void updateHearts(int health, int hunger, int thirst)
     {
-        Debug.Log("TEST");
         int remHH = Mathf.CeilToInt(happinessHearts.Count * (health / 10.0f));
         int remHuH = Mathf.CeilToInt(hungerHearts.Count * (hunger / 10.0f));
         int remTH = Mathf.CeilToInt(thirstHearts.Count * (thirst / 10.0f));
