@@ -41,3 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: pet
+    uniqueID: 131865039
+    locked: 0
+  - name: accessory
+    uniqueID: 4060608445
+    locked: 0
