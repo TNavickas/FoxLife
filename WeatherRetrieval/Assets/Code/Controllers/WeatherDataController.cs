@@ -64,45 +64,43 @@ public class WeatherDataController : MonoBehaviour
     }
 
     private string GetStationData(XmlNode node) {
-        XmlNode childNode = node.SelectSingleNode("station");
-        return childNode.InnerText;
+        XmlNode childNode = node?.SelectSingleNode("station") ?? null;
+        return childNode?.InnerText ?? "";
     }
 
     private string GetDateData(XmlNode node) {
-        XmlNodeList childNodes = node.SelectNodes("dateTime");
+        XmlNodeList childNodes = node?.SelectNodes("dateTime") ?? null;
+        if (childNodes == null) return "";
 
         string textSummary = "";
         foreach (XmlNode dateTimeNode in childNodes) {
-            string zone = dateTimeNode.Attributes["zone"]?.Value;
+            string zone = dateTimeNode.Attributes["zone"]?.Value ?? "";
             if(zone == "EDT") {
-                XmlNode summaryNode = dateTimeNode.SelectSingleNode("textSummary");
-                textSummary = summaryNode.InnerText;
+                XmlNode summaryNode = dateTimeNode?.SelectSingleNode("textSummary") ?? null;
+                textSummary = summaryNode?.InnerText ?? "";
             }
         }
         return textSummary;
     }
 
     private string GetConditionData(XmlNode node) {
-        XmlNode childNode = node.SelectSingleNode("condition");
-        return childNode.InnerText;
+        XmlNode childNode = node?.SelectSingleNode("condition") ?? null;
+        return childNode?.InnerText ?? "";
     }
 
-    private float GetTemperatureData(XmlNode node) {
-        XmlNode childNode = node.SelectSingleNode("temperature");
-        string temperatureStr = childNode.InnerText;
-        return float.Parse(temperatureStr);
+    private string GetTemperatureData(XmlNode node) {
+        XmlNode childNode = node?.SelectSingleNode("temperature") ?? null;
+        return childNode?.InnerText ?? "";
     }
 
-    private int GetHumidexData(XmlNode node) {
-        XmlNode childNode = node.SelectSingleNode("humidex");
-        string humidexStr = childNode.InnerText;
-        return int.Parse(humidexStr);
+    private string GetHumidexData(XmlNode node) {
+        XmlNode childNode = node?.SelectSingleNode("humidex") ?? null;
+        return childNode?.InnerText ?? "";
     }
 
-    private float GetWindData(XmlNode node) {
-        XmlNode windNode = node.SelectSingleNode("wind");
-        XmlNode speedNode = windNode.SelectSingleNode("speed");
-        string speedStr = speedNode.InnerText;
-        return float.Parse(speedStr);
+    private string GetWindData(XmlNode node) {
+        XmlNode windNode = node?.SelectSingleNode("wind") ?? null;
+        XmlNode speedNode = windNode?.SelectSingleNode("speed") ?? null;
+        return speedNode?.InnerText ?? "";
     }
 }

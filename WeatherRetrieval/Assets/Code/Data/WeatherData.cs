@@ -7,7 +7,7 @@ public class WeatherData {
     public string Station;
     public string Time;
     public string Condition;
-    public float Temperature;
-    public int Humidex;
-    public float WindSpeed;
+    public string Temperature;
+    public string Humidex;
+    public string WindSpeed;
 }
