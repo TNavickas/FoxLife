@@ -26,10 +26,12 @@ public class avatarModel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         updatePlayer();
         progressGame();
         //heartIconController.updateHearts(8, 6, 1);
         weatherIconController.displayIcons("Rain");
+
     }
 
     // Update is called once per frame
@@ -46,8 +48,10 @@ public class avatarModel : MonoBehaviour
         if (_item == "water")
         {
             incrementThrist();
+        } else if (_item == "food") {
+            incrementHunger();
         }
-        //checkConditions();
+        checkConditions();
     }
 
     private void updatePlayer()
@@ -95,13 +99,15 @@ public class avatarModel : MonoBehaviour
 
     public void checkConditions()
     {
-        var REGINTERVAL = 1f;  //Constants.TENMIN;
-        var FASTINTERVAL = 0.5f; //Constants.THREEMIN;
+        var REGINTERVAL = 10f;  //Constants.TENMIN;
+        var FASTINTERVAL = 3f; //Constants.THREEMIN;
         CancelInvoke("decrementHearts");
         CancelInvoke("decrementHunger");
         CancelInvoke("decrementThirst");
+        Debug.Log("Cond:" + weatherCond);
+        Debug.Log("TEMP:" + weatherTemp);
+        Debug.Log("Wind:" + weatherWind);
 
-        Debug.Log(weatherCond);
         // Sunny and high temperatures
         if (weatherCond.Contains("Sunny") && weatherTemp >= 22.0)
         {
@@ -111,7 +117,7 @@ public class avatarModel : MonoBehaviour
             InvokeRepeating("decrementHearts", REGINTERVAL, REGINTERVAL);
         }
         // Raining
-        else if (weatherCond.Contains("Rain") && item != "Umbrella")
+        else if (weatherCond.Contains("Rain") && item != "umbrella")
         {
             Debug.Log("Rain Poisoning");
             InvokeRepeating("decrementHearts", FASTINTERVAL, FASTINTERVAL);
@@ -122,7 +128,7 @@ public class avatarModel : MonoBehaviour
         else if (weatherWind >= 25.0 && weatherTemp <= 10)
         {
             Debug.Log("cw");
-            if (item != "CoatEar")
+            if (item != "coat")
             {
                 Debug.Log("dying");
                 InvokeRepeating("decrementHearts", FASTINTERVAL, FASTINTERVAL);
@@ -139,7 +145,7 @@ public class avatarModel : MonoBehaviour
 
         // Snow
 
-        else if (weatherCond.Contains("Snow") && item != "Hat")
+        else if (weatherCond.Contains("Snow") && item != "hat")
         {
             Debug.Log("Hypothermia");
             InvokeRepeating("decrementHearts", FASTINTERVAL, FASTINTERVAL);
@@ -203,7 +209,7 @@ public class avatarModel : MonoBehaviour
         weatherData = weather.GetComponent<WeatherDataController>().GetWeatherData(SelectedCityInfo.CityCode);
         weatherCond = weatherData.Condition;
         weatherTemp = float.Parse(weatherData.Temperature);
-        Debug.Log(weatherData.Condition);
+
         checkConditions();
     }
 
