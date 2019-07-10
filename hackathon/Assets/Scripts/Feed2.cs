@@ -10,6 +10,9 @@ public class Feed2 : MonoBehaviour
     {
         var fox = player.GetComponent<FoxPlayer>();
         fox.citem();
+        fox.incrementHearts();
+        fox.incrementHunger();
+        fox.incrementThrist();
         Debug.Log(fox.getTimeDifference());
     }
 }
