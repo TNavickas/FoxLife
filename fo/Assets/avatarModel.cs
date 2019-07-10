@@ -19,7 +19,7 @@ public class avatarModel : MonoBehaviour
     public GameObject weather;
     private WeatherData weatherData;
     private string weatherCond;
-    private float weatherTemp;
+    public float weatherTemp;
     private float weatherWind;
     private string _item;
 

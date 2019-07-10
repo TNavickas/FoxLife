@@ -1779,7 +1779,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf5cc6b5484d794296d1b871f85ed1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  avatarInfo: {fileID: 0}
+  avatarInfo: {fileID: 1960417280}
 --- !u!95 &727366713
 Animator:
   serializedVersion: 3
@@ -3910,7 +3910,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad39f3fd4f4abc44780b655fec2b278f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  avatarInfo: {fileID: 0}
+  avatarInfo: {fileID: 1960417280}
 --- !u!114 &1960417280
 MonoBehaviour:
   m_ObjectHideFlags: 0

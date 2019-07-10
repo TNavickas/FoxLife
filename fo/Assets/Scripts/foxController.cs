@@ -7,13 +7,13 @@ using UnityEngine;
 public class foxController : MonoBehaviour
 {
     private Animator foxAnimator;
-    private avatarModel avatarInfo;
+    public avatarModel avatarInfo;
     // Start is called before the first frame update
     void Start()
     {
         foxAnimator = GetComponent<Animator>();
         Debug.Log("agassdadasdasdasd");
-        avatarInfo = GetComponent<avatarModel>();
+        //avatarInfo = GetComponent<avatarModel>();
         Debug.Log(avatarInfo);
     }
 
@@ -35,25 +35,28 @@ public class foxController : MonoBehaviour
     //checks to see if food is on the screen, returns true if found
     public bool check_if_food()
     {
-        Debug.Log(avatarInfo);
+        //Debug.Log(avatarInfo);
         string item = avatarInfo.item;
         return (item == "food" ? true : false);
     }
     //if just ate food return true
     public bool check_if_hungry()
     {
-        return true;
+        int hunger = avatarInfo.hunger;
+        return hunger < 5 ? true : false;
     }
 
     //checks to see if thirsty: if just drank water return true
     public bool check_if_thirsty()
     {
-        return false;
+        int thirst = avatarInfo.thirst;
+        return thirst < 5 ? true : false;
     }
     //checks to see if there is clothing on the screen, returns true if found
     public bool check_if_clothed()
     {
-        return true;
+        string item = avatarInfo.item;
+        return (item == "coat" ? true : false);
     }
 
     //checks to see if the fox is content, returns true if so
@@ -64,23 +67,26 @@ public class foxController : MonoBehaviour
     //checks to see if the fox is cold, returns true if so
     public bool check_if_cold()
     {
-        return true;
+        float temp = avatarInfo.weatherTemp;
+        return temp < 10 ? true : false;
     }
 
     public bool check_if_umbrella()
     {
-        return false;
+        string item = avatarInfo.item;
+        return (item == "umbrella" ? true : false);
     }
 
     public bool check_if_water()
     {
-        return false;
+        string item = avatarInfo.item;
+        return (item == "water" ? true : false);
     }
 
     //returns the happiness of the fox
     public int get_happiness()
     {
-        return 100;
+        return avatarInfo.hearts;
     }
 
 
