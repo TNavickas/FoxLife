@@ -2216,7 +2216,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 794f5d16bbd214643b2f902493c5b9e3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ef09f20fef2e81d4e84ef5d0bfc0ad17, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -3929,6 +3929,7 @@ MonoBehaviour:
   weatherIconController: {fileID: 756830792}
   heartIconController: {fileID: 80476982}
   weather: {fileID: 333246482}
+  weatherTemp: 0
 --- !u!1 &1982157850
 GameObject:
   m_ObjectHideFlags: 0
