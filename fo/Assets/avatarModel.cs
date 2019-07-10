@@ -151,7 +151,7 @@ public class avatarModel : MonoBehaviour
 
     private void updateWeather()
     {
-        weatherData = weather.GetComponent<WeatherDataController>().GetWeatherData(PlayerPrefs.GetString("_city"));
+        weatherData = weather.GetComponent<WeatherDataController>().GetWeatherData(SelectedCityInfo.CityCode);
         weatherCond = weatherData.Condition;
         weatherTemp = float.Parse(weatherData.Temperature);
         Debug.Log(weatherData.Condition);
