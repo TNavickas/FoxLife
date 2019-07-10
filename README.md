@@ -12,13 +12,13 @@ The game focuses on a fox pet and the goal is to keep the fox happy, hydrated, a
 
 ### Screenshots:
 
+![screenshot4](/SCREENSHOTS/menu.PNG)
+
 ![screenshot1](/SCREENSHOTS/beginningmenu.PNG)
 
 ![screenshot2](/SCREENSHOTS/coat.PNG)
 
 ![screenshot3](/SCREENSHOTS/cold.PNG)
-
-![screenshot4](/SCREENSHOTS/menu.PNG)
 
 ![screenshot5](/SCREENSHOTS/umbrella.PNG)
 
