@@ -4,5 +4,3 @@
 !.gitignore
 !/Assets/
 !/ProjectSettings/
-!*.csproj
-!*.sln
