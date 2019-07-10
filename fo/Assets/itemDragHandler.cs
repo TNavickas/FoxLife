@@ -101,7 +101,7 @@ public class itemDragHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHan
             GameObject dragEndGameObj = eventData.pointerCurrentRaycast.gameObject;
             if (dragEndGameObj != null && dragEndGameObj.name == "avatar")
             {
-                dragEndGameObj.GetComponent<avatarModel>().useItem(draggedItem, draggedItem.name);
+                dragEndGameObj.GetComponent<wrapper>().callFoxFunc(draggedItem, draggedItem.name);
             }
 
             Destroy(draggedItem);
