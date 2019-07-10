@@ -47,3 +47,6 @@ TagManager:
   - name: avatar
     uniqueID: 2122221113
     locked: 0
+  - name: accessories
+    uniqueID: 963231521
+    locked: 0
