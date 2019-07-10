@@ -65,12 +65,14 @@ public class FoxPlayer : MonoBehaviour
         }
 
         InvokeRepeating("updateWeather", 0f, Constants.HOUR);
-        InvokeRepeating("setExitTime", 0f, 30f);
+        InvokeRepeating("setExitTime", 0f, Constants.THIRTYSEC);
         
     }
 
     public void checkConditions()
     {
+        var REGINTERVAL = Constants.TENMIN;
+        var FASTINTERVAL = Constants.THREEMIN;
         CancelInvoke("decrementHearts");
         CancelInvoke("decrementHunger");
         CancelInvoke("decrementThirst");
@@ -80,16 +82,16 @@ public class FoxPlayer : MonoBehaviour
         if (weatherCond.Contains("Sunny") && weatherTemp >= 22.0)
         {
             Debug.Log("Burning Up");
-            InvokeRepeating("decrementThirst", 5f, 5f);
-            InvokeRepeating("decrementHunger", 10f, 10f);
-            InvokeRepeating("decrementHearts", 10f, 10f);
+            InvokeRepeating("decrementThirst", FASTINTERVAL, FASTINTERVAL);
+            InvokeRepeating("decrementHunger", REGINTERVAL, REGINTERVAL);
+            InvokeRepeating("decrementHearts", REGINTERVAL, REGINTERVAL);
         }
         // Raining
         else if (weatherCond.Contains("Rain") && item != "Umbrella") {
             Debug.Log("Rain Poisoning");
-            InvokeRepeating("decrementHearts", 3f, 3f);
-            InvokeRepeating("decrementHunger", 10f, 10f);
-            InvokeRepeating("decrementThirst", 10f, 10f);
+            InvokeRepeating("decrementHearts", FASTINTERVAL, FASTINTERVAL);
+            InvokeRepeating("decrementHunger", REGINTERVAL, REGINTERVAL);
+            InvokeRepeating("decrementThirst", REGINTERVAL, REGINTERVAL);
         }
         // Windy & Cold
         else if (weatherWind >= 25.0 && weatherTemp <= 10)
@@ -98,15 +100,15 @@ public class FoxPlayer : MonoBehaviour
             if (item != "CoatEar")
             {
                 Debug.Log("dying");
-                InvokeRepeating("decrementHearts", 3f, 3f);
-                InvokeRepeating("decrementHunger", 3f, 3f);
-                InvokeRepeating("decrementThirst", 10f, 10f);
+                InvokeRepeating("decrementHearts", FASTINTERVAL, FASTINTERVAL);
+                InvokeRepeating("decrementHunger", FASTINTERVAL, FASTINTERVAL);
+                InvokeRepeating("decrementThirst", REGINTERVAL, REGINTERVAL);
             }
             else
             {
-                InvokeRepeating("decrementHearts", 10f, 10f);
-                InvokeRepeating("decrementHunger", 3f, 3f);
-                InvokeRepeating("decrementThirst", 10f, 10f);
+                InvokeRepeating("decrementHearts", REGINTERVAL, REGINTERVAL);
+                InvokeRepeating("decrementHunger", FASTINTERVAL, FASTINTERVAL);
+                InvokeRepeating("decrementThirst", REGINTERVAL, REGINTERVAL);
             }
         }
 
@@ -115,17 +117,17 @@ public class FoxPlayer : MonoBehaviour
         else if (weatherCond.Contains("Snow") && item != "Hat")
         {
             Debug.Log("Hypothermia");
-            InvokeRepeating("decrementHearts", 3f, 3f);
-            InvokeRepeating("decrementHunger", 10f, 10f);
-            InvokeRepeating("decrementThirst", 10f, 10f);
+            InvokeRepeating("decrementHearts", FASTINTERVAL, FASTINTERVAL);
+            InvokeRepeating("decrementHunger", REGINTERVAL, REGINTERVAL);
+            InvokeRepeating("decrementThirst", REGINTERVAL, REGINTERVAL);
         }
 
         else
         {
             Debug.Log("no");
-            InvokeRepeating("incrementHearts", 10f, 10f);
-            InvokeRepeating("decrementThirst", 10f, 10f);
-            InvokeRepeating("decrementHunger", 10f, 10f);
+            InvokeRepeating("incrementHearts", REGINTERVAL, REGINTERVAL);
+            InvokeRepeating("decrementThirst", REGINTERVAL, REGINTERVAL);
+            InvokeRepeating("decrementHunger", REGINTERVAL, REGINTERVAL);
         }
         
     }
