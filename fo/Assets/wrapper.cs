@@ -17,8 +17,8 @@ public class wrapper : MonoBehaviour
 
     }
 
-    public void callFoxFunc(GameObject item, string itemName)
+    public void callFoxFunc(string itemName)
     {
-        avatar.useItem(item, itemName);
+        avatar.useItem(itemName);
     }
 }

@@ -40,9 +40,8 @@ public class avatarModel : MonoBehaviour
         
     }
 
-    public void useItem(GameObject item, string itemName)
+    public void useItem(string itemName)
     {
-        Debug.Log(item);
         Debug.Log(itemName);
         _item = itemName;
         if (_item == "water")
